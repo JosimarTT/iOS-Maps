@@ -47,3 +47,29 @@ func obtenerPokemons() -> [Pokemon] {
     } catch {}
     return []
 }
+
+func obtenerPokemonsAtrapados() -> [Pokemon] {
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let queryConWhere = Pokemon.fetchRequest() as NSFetchRequest<Pokemon>
+    // sale error con este codigo
+    // queryConWhere.predicate = NSPredicate(format: "atrapado == %@", true as CVarArg)
+    queryConWhere.predicate = NSPredicate(format: "atrapado == true")
+    do {
+        let pokemons = try context.fetch(queryConWhere) as [Pokemon]
+        return pokemons
+    } catch {}
+    return []
+}
+
+func obtenerPokemonsNoAtrapados() -> [Pokemon] {
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let queryConWhere = Pokemon.fetchRequest() as NSFetchRequest<Pokemon>
+    // sale error con este codigo
+    // queryConWhere.predicate = NSPredicate(format: "atrapado == %@", false as CVarArg)
+    queryConWhere.predicate = NSPredicate(format: "atrapado == false")
+    do {
+        let pokemons = try context.fetch(queryConWhere) as [Pokemon]
+        return pokemons
+    } catch {}
+    return []
+}

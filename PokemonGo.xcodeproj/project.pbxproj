@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00D663352291DB84004F97A6 /* PokePin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D663342291DB84004F97A6 /* PokePin.swift */; };
 		8B7E6A4C228F6A4000C34041 /* PokedexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7E6A4B228F6A4000C34041 /* PokedexViewController.swift */; };
 		8B7E6A4E228F6FB500C34041 /* Funciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7E6A4D228F6FB500C34041 /* Funciones.swift */; };
 		8BC9D742228F43F200799D9E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9D741228F43F200799D9E /* AppDelegate.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00D663342291DB84004F97A6 /* PokePin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokePin.swift; sourceTree = "<group>"; };
 		8B7E6A4B228F6A4000C34041 /* PokedexViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokedexViewController.swift; sourceTree = "<group>"; };
 		8B7E6A4D228F6FB500C34041 /* Funciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones.swift; sourceTree = "<group>"; };
 		8BC9D73E228F43F200799D9E /* PokemonGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokemonGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,6 +68,7 @@
 			children = (
 				8BC9D741228F43F200799D9E /* AppDelegate.swift */,
 				8BC9D743228F43F200799D9E /* ViewController.swift */,
+				00D663342291DB84004F97A6 /* PokePin.swift */,
 				8BC9D745228F43F200799D9E /* Main.storyboard */,
 				8B7E6A4B228F6A4000C34041 /* PokedexViewController.swift */,
 				8BC9D74B228F43F200799D9E /* Assets.xcassets */,
@@ -157,6 +160,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00D663352291DB84004F97A6 /* PokePin.swift in Sources */,
 				8BC9D744228F43F200799D9E /* ViewController.swift in Sources */,
 				8B7E6A4C228F6A4000C34041 /* PokedexViewController.swift in Sources */,
 				8BC9D742228F43F200799D9E /* AppDelegate.swift in Sources */,
