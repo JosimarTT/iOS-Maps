@@ -32,20 +32,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         pokemons = obtenerPokemons()
         
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse{
-            mapView.delegate = self
-            mapView.showsUserLocation = true
-            ubicacion.startUpdatingLocation()
-            Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { (timer) in
-                if let coord = self.ubicacion.location?.coordinate {
-                    let pokemon = self.pokemons[Int(arc4random_uniform(UInt32(self.pokemons.count)))]
-                    let pin = PokePin(coord: coord, pokemon: pokemon)
-                    let randomLat = (Double(arc4random_uniform(200)) - 100) / 5000
-                    let randomLon = (Double(arc4random_uniform(200)) - 100) / 5000
-                    pin.coordinate.longitude += randomLon
-                    pin.coordinate.latitude += randomLat
-                    self.mapView.addAnnotation(pin)
-                }
-            })
+            setup()
         } else {
            ubicacion.requestWhenInUseAuthorization()
         }
@@ -94,7 +81,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let region = MKCoordinateRegionMakeWithDistance(view.annotation!.coordinate, 200, 200)
         mapView.setRegion(region, animated: true)
         
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (Timer) in
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (Timer) in
             if let coord = self.ubicacion.location?.coordinate {
                 let pokemon = (view.annotation as! PokePin).pokemon
                 if MKMapRectContainsPoint(mapView.visibleMapRect, MKMapPointForCoordinate(coord)) {
@@ -121,9 +108,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     self.present(alertaVC, animated: true, completion: nil)
                 }
             }
-        }
+        })
     }
 
+    func setup() {
+        mapView.delegate = self
+        mapView.showsUserLocation = true
+        ubicacion.startUpdatingLocation()
+        Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { (timer) in
+            if let coord = self.ubicacion.location?.coordinate {
+                let pokemon = self.pokemons[Int(arc4random_uniform(UInt32(self.pokemons.count)))]
+                let pin = PokePin(coord: coord, pokemon: pokemon)
+                let randomLat = (Double(arc4random_uniform(200)) - 100) / 5000
+                let randomLon = (Double(arc4random_uniform(200)) - 100) / 5000
+                pin.coordinate.longitude += randomLon
+                pin.coordinate.latitude += randomLat
+                self.mapView.addAnnotation(pin)
+            }
+        })
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            setup()
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
