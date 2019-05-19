@@ -37,8 +37,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             ubicacion.startUpdatingLocation()
             Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { (timer) in
                 if let coord = self.ubicacion.location?.coordinate {
-                    let pin = MKPointAnnotation()
-                    pin.coordinate = coord
+                    let pokemon = self.pokemons[Int(arc4random_uniform(UInt32(self.pokemons.count)))]
+                    let pin = PokePin(coord: coord, pokemon: pokemon)
                     let randomLat = (Double(arc4random_uniform(200)) - 100) / 5000
                     let randomLon = (Double(arc4random_uniform(200)) - 100) / 5000
                     pin.coordinate.longitude += randomLon
@@ -75,7 +75,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         
         let pinView = MKAnnotationView(annotation: annotation, reuseIdentifier: nil)
-        pinView.image = UIImage(named: "mew")
+        let pokemon = (annotation as! PokePin).pokemon
+        pinView.image = UIImage(named: pokemon.imagenNombre!)
         
         var frame = pinView.frame
         frame.size.height = 25
@@ -85,6 +86,43 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         return pinView
     }
     
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        mapView.deselectAnnotation(view.annotation, animated: true)
+        if view.annotation is MKUserLocation {
+            return
+        }
+        let region = MKCoordinateRegionMakeWithDistance(view.annotation!.coordinate, 200, 200)
+        mapView.setRegion(region, animated: true)
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (Timer) in
+            if let coord = self.ubicacion.location?.coordinate {
+                let pokemon = (view.annotation as! PokePin).pokemon
+                if MKMapRectContainsPoint(mapView.visibleMapRect, MKMapPointForCoordinate(coord)) {
+                    print("Puede atrapar al pokemon")
+                    
+                    pokemon.atrapado = true
+                    (UIApplication.shared.delegate as! AppDelegate).saveContext()
+                    mapView.removeAnnotation(view.annotation!)
+                    
+                    let alertaVC = UIAlertController(title: "Felicidades", message: "Atrapaste un \(pokemon.nombre!)", preferredStyle: .alert)
+                    let pokedexAccion = UIAlertAction(title: "Pokedex", style: .default, handler: { (action) in
+                        self.performSegue(withIdentifier: "pokedexSegue", sender: nil)
+                    })
+                    
+                    alertaVC.addAction(pokedexAccion)
+                    let okAccion = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertaVC.addAction(okAccion)
+                    
+                    
+                } else {
+                    let alertaVC = UIAlertController(title: "Ups!", message: "Estas muy lejos de ese \(pokemon.nombre!)", preferredStyle: .alert)
+                    let okAccion = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertaVC.addAction(okAccion)
+                    self.present(alertaVC, animated: true, completion: nil)
+                }
+            }
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
