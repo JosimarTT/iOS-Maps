@@ -60,4 +60,26 @@ class PokedexViewController: UIViewController, UITableViewDataSource, UITableVie
             return "No atrapados"
         }
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return true
+        }
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            let pokemonAtrapado = pokemonsAtrapados[indexPath.row]
+            crearPokemon(xnombre: pokemonAtrapado.nombre!, ximagenNombre: pokemonAtrapado.imagenNombre!)
+            _=obtenerPokemonsNoAtrapados()
+            let delegate  = (UIApplication.shared.delegate as! AppDelegate)
+            let context = delegate.persistentContainer.viewContext
+            context.delete(pokemonAtrapado)
+            delegate.saveContext()
+            pokemonsAtrapados = obtenerPokemonsAtrapados()
+            //tableView.reloadData()
+            dismiss(animated: true, completion: nil)
+        }
+    }
 }
