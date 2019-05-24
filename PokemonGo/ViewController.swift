@@ -54,8 +54,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let pinView = MKAnnotationView(annotation: annotation, reuseIdentifier: nil)
             pinView.image = UIImage(named: "player")
             var frame = pinView.frame
-            frame.size.height = 25
-            frame.size.width = 25
+            frame.size.height = 50
+            frame.size.width = 50
             pinView.frame = frame
             
             return pinView
@@ -66,8 +66,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         pinView.image = UIImage(named: pokemon.imagenNombre!)
         
         var frame = pinView.frame
-        frame.size.height = 25
-        frame.size.width = 25
+        frame.size.height = 50
+        frame.size.width = 50
         pinView.frame = frame
         
         return pinView
